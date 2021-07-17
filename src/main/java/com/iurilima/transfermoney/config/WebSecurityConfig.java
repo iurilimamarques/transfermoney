@@ -6,13 +6,8 @@ import com.iurilima.transfermoney.config.service.ApplicationUserDetailsService;
 import com.stripe.Stripe;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.boot.web.client.RootUriTemplateHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.client.ClientHttpRequestFactory;
-import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
-import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -22,10 +17,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriTemplateHandler;
-
-import java.time.Duration;
 
 @Configuration
 @EnableWebSecurity
@@ -75,15 +66,6 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public void defineApiKey() {
         Stripe.apiKey = apiKey;
-    }
-
-    @Bean
-    public RestTemplate restTemplate(RestTemplateBuilder restTemplateBuilder) {
-
-        return restTemplateBuilder
-                .setReadTimeout(Duration.ofSeconds(2))
-                .setReadTimeout(Duration.ofSeconds(2))
-                .build();
     }
 
 }

@@ -8,6 +8,7 @@ import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.concurrent.Callable;
 
 @RestController
 @RequestMapping("/payment")
@@ -16,16 +17,14 @@ public class PaymentController {
     @Autowired
     private PaymentBusiness paymentBusiness;
 
-    @Autowired
-    RestTemplate restTemplate;
-
     @PostMapping
     public ResponseEntity<Object> createPaymentMethod(@Valid @RequestBody CreditCardDto creditCardDto, HttpServletRequest request) {
         return paymentBusiness.createPaymentMethod(creditCardDto, request);
     }
 
+    @ResponseBody
     @GetMapping
-    public ResponseEntity<Object> getPaymentMethods(HttpServletRequest request) {
+    public ResponseEntity<Object> getPaymentMethods(HttpServletRequest request) throws InterruptedException {
         return paymentBusiness.getPaymentMethods(request);
     }
 }
