@@ -1,0 +1,21 @@
+version: "3.7"
+services:
+  container_transfermoney_mysql_db:
+    image: mysql:8.0
+    ports:
+      - 3306:3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=transfermoney_db
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=root
+
+  container_transfermoney_spring_app:
+    image: transfermoney:dev-v1
+    ports:
+      - 80:8080
+    environment:
+      - SPRING_PROFILES_ACTIVE=
+    depends_on:
+      - container_transfermoney_mysql_db
+    command: "mvn clean spring-boot:run"
