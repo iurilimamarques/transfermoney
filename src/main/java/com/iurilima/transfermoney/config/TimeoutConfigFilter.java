@@ -27,22 +27,15 @@ public class TimeoutConfigFilter extends OncePerRequestFilter {
         ScheduledFuture<?> timeout = timeoutPool.schedule(() -> {
             if (completed.compareAndSet(false, true))
                 requestHandlingThread.interrupt();
-        }, 10, TimeUnit.SECONDS);
+        }, 20, TimeUnit.SECONDS);
 
         try {
             filterChain.doFilter(request, response);
             timeout.cancel(false);
         } catch (IOException | ServletException e) {
-            throw new RuntimeException(e.getMessage());
+            throw new RuntimeException("The server is taking too long to respond.");
         } finally {
             completed.set(true);
         }
-    }
-
-    public Runnable scheduler(AtomicBoolean completed, Thread requestHandlingThread) {
-        return () -> {
-            if (completed.compareAndSet(false, true))
-                requestHandlingThread.interrupt();
-        };
     }
 }
