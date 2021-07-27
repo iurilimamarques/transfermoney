@@ -3,6 +3,7 @@ package com.iurilima.transfermoney.controller.user;
 import com.iurilima.transfermoney.model.QUser;
 import com.iurilima.transfermoney.model.User;
 import com.iurilima.transfermoney.repository.UserRepository;
+import com.iurilima.transfermoney.util.DozerConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,7 +23,7 @@ public class UserController {
     @GetMapping("/{username}")
     public ResponseEntity<Object> findUser(@PathVariable("username") String username) {
         List<User> users = (List<User>) userRepository.findAll(QUser.user.username.contains(username));
-
-        return ResponseEntity.ok(users);
+        List<UserDto> parsedUsers = DozerConverter.parseListObjects(users, UserDto.class);
+        return ResponseEntity.ok(parsedUsers);
     }
 }
